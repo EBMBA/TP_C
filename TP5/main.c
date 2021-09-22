@@ -132,10 +132,46 @@ void ex3(){
     free(nbrPremier);
 }
 
+void ex7(){
+    int nbr = 0, reste = 0, taille = 0;
+    int *nbrPremier = NULL;
+    bool premier = true; 
+
+    printf("Entrez le nombre naturel à tester : ");
+    scanf("%d", &nbr);
+
+    taille = nbr / 2;
+    
+    nbrPremier = malloc(  taille * sizeof(int));
+
+    if (nbrPremier == NULL) // On vérifie si l'allocation a marché ou non
+    {
+            exit(0); // On arrête tout
+    }
+
+    initTab(nbrPremier, taille);
+
+    for (int p = 1; p <= nbr; p++)
+    {
+        premier = isPremier(p);
+
+        if ( premier == true )
+        {
+            printf("%d est un nombre premier.\n", p);
+            addTab(nbrPremier, taille, p);
+        }
+
+    }
+    printTab(nbrPremier, taille); 
+
+    free(nbrPremier);
+}
+
 int main(int argc, char const *argv[])
 {
     //ex1();
     //ex2();
-    ex3();
+    //ex3();
+    ex7();
     return 0;
 }
