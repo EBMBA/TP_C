@@ -4,7 +4,7 @@
 
 void afficheMenu(){
     printf("Choissisez une conversion :\n");
-    for (size_t i = 1; i < 8; i++)
+    for (size_t i = 1; i < 9; i++)
     {
         switch (i)
         {
@@ -34,6 +34,10 @@ void afficheMenu(){
         
         case 7:
             printf("%ld. Décimal → Hexadécimal en utilisant le decalage de bits et les opérateurs bit a bit\n",i );
+            break;
+        
+        case 8:
+            printf("%ld. Quitter\n",i );
             break;
         
         default:
@@ -131,12 +135,17 @@ void traiterChoix(int choix, char *val){
             scanf("%u", &nombreDecimal);
 
             val = dectobin_v3(nombreDecimal);
-            printf("Valeur en binaire : %s\n", val);
+            printf("Valeur en binaire par decalage de bits: %s\n", val);
             
             break;
         
         case 7:
             printf("Décimal → Hexadécimal en utilisant le decalage de bits et les opérateurs bit a bit\n" );
+            printf("Entrez le nombre en decimal : " );
+            scanf("%u", &nombreDecimal);
+
+            val = dectohexa_v2(nombreDecimal);
+            printf("Valeur en hexadecimal par decalage de bits: %s\n", val);
             break;
         
         default:
@@ -157,20 +166,19 @@ int obtenirTaille(char *tab){
 
 char *inverserTab(char *Tab){
     char *tableauInverser = NULL;
-    int i = 0;
-
-    while (Tab[i] != '\0')
-    {
-        i++;
-    }
-    
+    unsigned int i = obtenirTaille(Tab);
+    //printf("%d", i);
+    tableauInverser = malloc(i * sizeof(char));
 
     // inversion
-    int p = i+1;
-    for (int n = 0; n < p; n++)
+    i--;
+    unsigned int p = i;
+    for (unsigned int n = 0; n <= p; n++)
     {
         tableauInverser[n] = Tab[i];
-        //printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+        //printf("Resultat : %s\nInversion Resultat : %s\n",Tab, tableauInverser);
         i--; 
     }
+
+    return tableauInverser;
 }

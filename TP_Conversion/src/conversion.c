@@ -48,8 +48,7 @@ int hexatodec(char *val){
 
 char *dectohexa(unsigned int val){
     char *resultat = NULL, *inversionResultat =  NULL;
-    char tempVal3;
-    int tempVal1 = val, taille = 0, tempVal2 = 0, puissance = 1, i = 0;
+    int tempVal1 = val, taille = 0, tempVal2 = 0, i = 0;
 
     // Nombre de chiffre dans le nombre : 
     if (tempVal1 >= 10)
@@ -221,21 +220,21 @@ char *dectobin_v1(unsigned int val){
 
 char *dectobin_v2(unsigned int val){
     char *resultat = NULL, *inversionResultat = NULL;
-    int taille = 0, tempVal1 = val, i = 0;
+    int taille = 0, tempValTaille1 = val, reste = 0, i = 0;
 
     
     // Nombre de chiffre dans le nombre : 
-    if (tempVal1 >= 10)
+    if (tempValTaille1 >= 10)
     {
-        while(tempVal1 > 0){
+        while(tempValTaille1 > 0){
             taille ++;
-            tempVal1 = tempVal1 / 10 ;
+            tempValTaille1 = tempValTaille1 / 10 ;
         }
     }
     else {
         taille = 1;
     }
-    printf("Taille : %d\n", taille);
+    //printf("Taille : %d\n", taille);
 
     resultat = malloc((taille * 4) * sizeof(char));
     inversionResultat = malloc((taille * 4) * sizeof(char));
@@ -247,20 +246,20 @@ char *dectobin_v2(unsigned int val){
 
     while (val > 0)
     {   
-        tempVal1 = val % 2;
+        reste = val % 2;
         val = val / 2 ;
-        printf("val : %d\ntempVal2 : %d\n", val, tempVal1);
+        //printf("val : %d\ntempVal2 : %d\n", val, reste);
         
-        resultat[i] = tempVal1 + '0' ;
-        
+        resultat[i] = reste + '0' ;
+        //printf("ici\n"); 
+        //printf("Resultat : %s\n",resultat);
+
         i++;
+        //printf("Resultat : %s\n",resultat);
     }
-    
-    
-    
-    
+
     inversionResultat = inverserTab(resultat);
-    printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+    //printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
 
     
     return inversionResultat;
@@ -272,27 +271,72 @@ char *dectobin_v3(unsigned int val){
     char *resultat, *inversionResultat = NULL; 
     unsigned bit = 0 ;
 	unsigned mask = 1 ;
-    int p ; 
 
     resultat =  malloc(sizeof(val)*4 * sizeof(char));
     inversionResultat = malloc(sizeof(val)*4  * sizeof(char));
 
 	for (int i = 0 ; i < (sizeof(val)*4 ); ++i)
 	{
-		bit = (val & mask) >> i ;
+		bit = (val&mask) >> i ;
 		resultat[i] = bit + '0' ;
 		mask <<= 1 ;
-        p = i;
 	}
-    printf("Resultat : %s\n",resultat);
+    //printf("Resultat : %s\n",resultat);
 
-    for (int n = 0; n <= p; n++)
-    {
-        inversionResultat[n] = resultat[p];
-        printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
-        p--; 
-    }
-    return resultat;
+    inversionResultat = inverserTab(resultat);
+    
+    return inversionResultat;
     free(inversionResultat);
+    free(resultat);
+}
+
+char *dectohexa_v2(unsigned int val){
+    char *resultat, *inversionResultat = NULL; 
+    char tempValBit; 
+    unsigned bit = 0 ;
+	unsigned mask = 15 ; // Nombre de F le max sur un hexa
+    int p = 0, taille = 0; 
+    unsigned int tempValTaille1 = val; 
+    // Nombre de chiffre dans le nombre : 
+    if (tempValTaille1 >= 10)
+    {
+        while(tempValTaille1 > 0){
+            taille ++;
+            tempValTaille1 = tempValTaille1 / 10 ;
+        }
+    }
+    else {
+        taille = 1;
+    }
+    //printf("Taille : %ld\n",sizeof(val));
+
+    resultat =  malloc((taille+1) * sizeof(char));
+    inversionResultat = malloc((taille+1 )* sizeof(char));
+    
+
+	for (int i = 0 ; i < (taille*4+1); i+=4) // decalage de 4bits par 4bits 
+	{
+		bit = (val & mask) >> i ;
+        //printf("bit : %d\n",bit);
+        tempValBit = bit + '0';
+        //printf("bit char : %c\n",tempValBit);
+
+        // Passage en lettre : 
+        if (tempValBit >= 58 && tempValBit<=63)
+        {
+            tempValBit+= (65-58); // ascii : 'A' - ':'
+        }
+		resultat[p] =  tempValBit;
+        //printf("Resultat : %s\n",resultat);
+		mask <<= 4 ;
+        p ++;
+	}
+    //printf("Resultat : %s\n",resultat);
+
+    inversionResultat = inverserTab(resultat);
+    
+    return inversionResultat;
+    free(inversionResultat);
+    free(resultat);
 }
 
