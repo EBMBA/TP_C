@@ -154,3 +154,23 @@ int obtenirTaille(char *tab){
     
     return taille;
 }
+
+char *inverserTab(char *Tab){
+    char *tableauInverser = NULL;
+    int i = 0;
+
+    while (Tab[i] != '\0')
+    {
+        i++;
+    }
+    
+
+    // inversion
+    int p = i+1;
+    for (int n = 0; n < p; n++)
+    {
+        tableauInverser[n] = Tab[i];
+        //printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+        i--; 
+    }
+}

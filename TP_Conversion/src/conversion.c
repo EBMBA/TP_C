@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "../include/fonctionSupplementaire.h"
 
 int bintodec(char *val){
     //printf("debut fonction\n");
@@ -256,16 +257,9 @@ char *dectobin_v2(unsigned int val){
     }
     
     
-    // inversion
-    int p = i;
-    for (int n = 0; n <= p; n++)
-    {
-        inversionResultat[n] = resultat[i];
-        printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
-        i--; 
-    }
     
-
+    
+    inversionResultat = inverserTab(resultat);
     printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
 
     
