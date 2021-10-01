@@ -1,177 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void afficheMenu();
-int obtenirTaille(char *tab);
-void traiterChoix(int choix, char *val);
-int bintodec(char *val);
-int hexatodec(char *val);
-char *dectohexa(unsigned int val);
-char *dectobin_v1(unsigned int val);
-char *dectobin_v2(unsigned int val);
-char *dectobin_v3(unsigned int val);
-char *dectohexa_v2(unsigned int val);
-
-int main(int argc, char const *argv[])
-{
-    // Partie des declarations des variables:
-    char *valeur;
-    int resultat = 0, choix = 0;
-    // Partie du choix de la conversion :
-    while ( choix < 1|| choix > 7)
-    {
-        afficheMenu();
-        scanf("%d", &choix);
-    }
-    
-    // Partie du traitement du choix :
-    traiterChoix(choix, valeur);
-
-    return 0;
-}
-
-void afficheMenu(){
-    printf("Choissisez une conversion :\n");
-    for (size_t i = 1; i < 8; i++)
-    {
-        switch (i)
-        {
-        case 1:
-            printf("%ld. Binaire → Décimal\n",i );
-            break;
-
-        case 2:
-            printf("%ld. Hexadécimal → Décimal\n",i );
-            break;
-        
-        case 3:
-            printf("%ld. Décimal → Hexadécimal\n",i );
-            break;
-        
-        case 4:
-            printf("%ld. Décimal → Binaire en utilisant la methode par soustraction\n",i );
-            break;
-        
-        case 5:
-            printf("%ld. Décimal → Binaire en utilisant la methode par division\n",i );
-            break;
-        
-        case 6:
-            printf("%ld. Décimal → Binaire en utilisant le decalage de bits et les opérateurs bit a bit\n",i );
-            break;
-        
-        case 7:
-            printf("%ld. Décimal → Binaire en utilisant le decalage de bits et les opérateurs bit a bit\n",i );
-            break;
-        
-        default:
-            break;
-        }
-    }
-    printf(" : ");
-    
-}
-
-void traiterChoix(int choix, char *val){
-    int taille = 0, resultat = 0;
-    //char *valeurHexadecimal;
-    unsigned int nombreDecimal = 0;
-    switch (choix)
-        {
-        case 1:
-            printf("Binaire → Décimal\n" );
-
-            printf("Entrez le nombre de bit : " );
-            scanf("%d", &taille);
-
-            val = malloc( taille * sizeof(char));
-
-            if (val == NULL) // On vérifie si l'allocation a marché ou non
-            {
-                    exit(0); // On arrête tout
-            }
-
-            printf("Entrez le nombre en binaire : " );
-            scanf("%s", val);
-
-            resultat = bintodec(val);
-            printf("Le nombre en base 10 est : %d\n", resultat);
-
-            free(val);
-            break;
-
-        case 2:
-            printf("Hexadécimal → Décimal\n" );
-
-            printf("Entrez le nombre de chiffres/lettres : " );
-            scanf("%d", &taille);
-
-            val = malloc( taille * sizeof(char));
-
-            if (val == NULL) // On vérifie si l'allocation a marché ou non
-            {
-                    exit(0); // On arrête tout
-            }
-
-            printf("Entrez le nombre en hexadecimal : " );
-            scanf("%s", val);
-
-            resultat = hexatodec(val);
-            printf("Le nombre en base 10 est : %d\n", resultat);
-
-            free(val);
-            break;
-        
-        case 3:
-            printf("Décimal → Hexadécimal\n" );
-            printf("Entrez le nombre en decimal : " );
-            scanf("%d", &nombreDecimal);
-
-            val = dectohexa(nombreDecimal);
-
-            printf("Valeur en hexadecimal : %s\n", val);
-
-            break;
-        
-        case 4:
-            printf("Décimal → Binaire en utilisant la methode par soustraction\n" );
-            printf("Décimal → Hexadécimal\n" );
-            printf("Entrez le nombre en decimal : " );
-            scanf("%d", &nombreDecimal);
-
-            val = dectobin_v1(nombreDecimal);
-
-            printf("Valeur en binaire : %s\n", val);
-            break;
-        
-        case 5:
-            printf("Décimal → Binaire en utilisant la methode par division\n" );
-            break;
-        
-        case 6:
-            printf("Décimal → Binaire en utilisant le decalage de bits et les opérateurs bit a bit\n" );
-            break;
-        
-        case 7:
-            printf("Décimal → Binaire en utilisant le decalage de bits et les opérateurs bit a bit\n" );
-            break;
-        
-        default:
-            break;
-    }
-}
-
-int obtenirTaille(char *tab){
-    int taille = 0;
-
-    while (tab[taille] != '\0')
-    {
-        taille ++;
-    }
-    
-    return taille;
-}
-
 int bintodec(char *val){
     //printf("debut fonction\n");
     int taille = obtenirTaille(val), conversion = 0, puissance = 1 ;
@@ -385,9 +214,91 @@ char *dectobin_v1(unsigned int val){
     
     
     //printf("Resultat : %s\n",resultat, );
-
     return resultat;
     free(resultat);
 }
 
+char *dectobin_v2(unsigned int val){
+    char *resultat = NULL, *inversionResultat = NULL;
+    int taille = 0, tempVal1 = val, i = 0;
+
+    
+    // Nombre de chiffre dans le nombre : 
+    if (tempVal1 >= 10)
+    {
+        while(tempVal1 > 0){
+            taille ++;
+            tempVal1 = tempVal1 / 10 ;
+        }
+    }
+    else {
+        taille = 1;
+    }
+    printf("Taille : %d\n", taille);
+
+    resultat = malloc((taille * 4) * sizeof(char));
+    inversionResultat = malloc((taille * 4) * sizeof(char));
+
+    if (resultat == NULL || inversionResultat == NULL) // On vérifie si l'allocation a marché ou non
+    {
+        exit(0); // On arrête tout
+    }
+
+    while (val > 0)
+    {   
+        tempVal1 = val % 2;
+        val = val / 2 ;
+        printf("val : %d\ntempVal2 : %d\n", val, tempVal1);
+        
+        resultat[i] = tempVal1 + '0' ;
+        
+        i++;
+    }
+    
+    
+    // inversion
+    int p = i;
+    for (int n = 0; n <= p; n++)
+    {
+        inversionResultat[n] = resultat[i];
+        printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+        i--; 
+    }
+    
+
+    printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+
+    
+    return inversionResultat;
+    free(resultat);
+    free(inversionResultat);
+}
+
+char *dectobin_v3(unsigned int val){
+    char *resultat, *inversionResultat = NULL; 
+    unsigned bit = 0 ;
+	unsigned mask = 1 ;
+    int p ; 
+
+    resultat =  malloc(sizeof(val)*4 * sizeof(char));
+    inversionResultat = malloc(sizeof(val)*4  * sizeof(char));
+
+	for (int i = 0 ; i < (sizeof(val)*4 ); ++i)
+	{
+		bit = (val & mask) >> i ;
+		resultat[i] = bit + '0' ;
+		mask <<= 1 ;
+        p = i;
+	}
+    printf("Resultat : %s\n",resultat);
+
+    for (int n = 0; n <= p; n++)
+    {
+        inversionResultat[n] = resultat[p];
+        printf("Resultat : %s\nInversion Resultat : %s\n",resultat, inversionResultat);
+        p--; 
+    }
+    return resultat;
+    free(inversionResultat);
+}
 
